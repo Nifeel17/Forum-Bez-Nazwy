@@ -30,7 +30,7 @@ if(isset($_COOKIE['nazwa'])&&isset($_SESSION['nazwa'])==false){
                     <a href="index.php" class="nav-link nav-item">Strona główna</a>
                     <a href="forum.php" class="nav-link nav-item">Forum</a>
                     <a class="nav-link nav-item active">Konto</a>
-                    <a href="#" class="nav-link nav-item">Coś 2</a>
+                    <a href="#" class="nav-link nav-item">Znajomi</a>
                     <a href="#" class="nav-link nav-item">Autor</a>
                 </div>
                 <span class="navbar-text d-none d-md-block"><?php echo date('d/m'), "/20", date("y"); ?></span>
@@ -64,9 +64,6 @@ if(isset($_COOKIE['nazwa'])&&isset($_SESSION['nazwa'])==false){
         </div>
     </div>
 </div>
-
-<!--SKONCZYLEM NA TYM ZE FORM ZROBIONY, TERAZ DODAC SPRAWDZENIE Z PHP I JS WYSWIETLENIE CZY JEST ZLE, TO NA DOLE TO TYLKO CTRL c CTRL V Z INNEGO PLIKU, NIC NIE GRZEBANE-->
-
 <?php
 if(isset($_POST['nazwa']))
 {

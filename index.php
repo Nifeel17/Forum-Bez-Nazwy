@@ -27,6 +27,20 @@ if(isset($_COOKIE['nazwa'])&&isset($_SESSION['nazwa'])==false){
 }
 if(isset($_SESSION['nazwa'])&&isset($_COOKIE['nazwa']))
 {
+    require_once "connect.php";
+    $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
+    $nazwa=$_SESSION['nazwa'];
+    $sql="SELECT * FROM uzytkownicy WHERE nazwa='$nazwa'";
+    if($rezultat=@$polaczenie->query($sql))
+     {
+        $wiersz=$rezultat->fetch_assoc();
+        $_SESSION['ID']=$wiersz['ID'];
+        $_SESSION['haslo']=$wiersz['haslo'];
+        $_SESSION['plec']=$wiersz['plec'];
+        $_SESSION['mail']=$wiersz['mail'];
+        $_SESSION['wiek']=$wiersz['wiek'];
+        $_SESSION['data-dolaczenia']=$wiersz['data_dolaczenia'];
+    }
     if($_COOKIE['nazwa']!=$_SESSION['nazwa']&&$_SESSION['zgodanacookies']==1)
     {
         $nazwa=$_SESSION['nazwa'];
@@ -64,7 +78,7 @@ if(isset($_SESSION['nazwa'])){
                     <a class="nav-link nav-item active">Strona główna</a>
                     <a href="forum.php" class="nav-link nav-item">Forum</a>
                     <a href="<?php if(isset($_SESSION['nazwa'])){ $id=$_SESSION['ID']; echo 'konto.php?ID=',$id; } else{ echo 'zalogujsie.php';} ?>" class="nav-link nav-item"><?php if(isset($_SESSION['nazwa'])) {echo $_SESSION['nazwa'];}else{echo "Konto";} ?></a>
-                    <a href="#" class="nav-link nav-item">Coś 2</a>
+                    <a href="#" class="nav-link nav-item">Znajomi</a>
                     <a href="#" class="nav-link nav-item">Autor</a>
                 </div>
                 <span class="navbar-text d-none d-md-block"><?php echo date('d/m'), "/20", date("y"); ?></span>
