@@ -6,3 +6,4 @@ Forum to tworzone jest w ramach... jest tworzone i to się liczy. Jest to całki
 -logowanie i rejestracja
 -wygląd przygotowany przy pomocy bootstrap 4
 -mozliwosc tworzenia strony o sobie (uzytkownik moze stworzyc swoją własną strone o sobie)
+-ELEMENT DODATKOWY: system rang
