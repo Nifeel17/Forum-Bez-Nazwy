@@ -25,7 +25,7 @@ if(isset($_COOKIE['nazwa'])&&isset($_SESSION['nazwa'])==false){
         $_SESSION['data-dolaczenia']=$wiersz['data_dolaczenia'];
     }
 }
-if(isset($_SESSION['nazwa'])&&isset($_COOKIE['nazwa']))
+if(isset($_SESSION['nazwa']))
 {
     require_once "connect.php";
     $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
@@ -41,7 +41,7 @@ if(isset($_SESSION['nazwa'])&&isset($_COOKIE['nazwa']))
         $_SESSION['wiek']=$wiersz['wiek'];
         $_SESSION['data-dolaczenia']=$wiersz['data_dolaczenia'];
     }
-    if($_COOKIE['nazwa']!=$_SESSION['nazwa']&&$_SESSION['zgodanacookies']==1)
+    if(isset($_COOKIE['nazwa'])&&$_COOKIE['nazwa']!=$_SESSION['nazwa']&&$_SESSION['zgodanacookies']==1)
     {
         $nazwa=$_SESSION['nazwa'];
         setcookie("nazwa","$nazwa",time() + (86400 * 30) );

@@ -1,5 +1,8 @@
 <?php
 session_start();
+if(isset($_SESSION['nazwa'])||isset($_COOKIE['nazwa'])){
+    header("Location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,50 +22,88 @@ session_start();
             </button>
             <div class="collapse navbar-collapse" id="navbarContent">
                 <div class="navbar-nav mr-auto">
-                    <a class="nav-link nav-item">Strona główna</a>
+                    <a href="index.php" class="nav-link nav-item">Strona główna</a>
                     <a href="forum.php" class="nav-link nav-item">Forum</a>
                     <a class="nav-link nav-item active">Konto</a>
                     <a href="#" class="nav-link nav-item">Znajomi</a>
                     <a href="#" class="nav-link nav-item">Autor</a>
                 </div>
-                <span class="navbar-text d-none d-md-block"><?php echo date('d/m'), "/20", date("y"); ?></span>
+                <span class="navbar-text d-none d-md-block"></span>
                 <span class="pl-5 navbar-text d-none d-md-block"></span>
             </div>
         </div>
     </nav>
 
 
-    <div class="container py-5  bg-light">
-    <div class="row mt-3 mt-md-2">
+    <div class="container py-2 py-md-4  bg-light">
+    <div class="row">
         <div class="col-12 col-md-8 offset-md-2 text-center">
             <h1 class="display-4 pb-4">Zarejestruj się</h1>
-            <form method="POST" action="rejestracja.php">
+            <form method="POST" action="rejestracjasprawdzenie.php">
                 <div class="form-row">
                     <div class="form-group col-10 offset-1 col-md-8 offset-md-2 pb-3">
                         <label for="name">Nazwa użytkownika</label>
-                        <input type="text" name="nazwa" id="nazwa" placeholder="Twoja nazwa użytkownika" value="<?php if(isset($_POST['nazwa'])){ echo $_POST['nazwa'];}?>" class="form-control">
+                        <input type="text" name="nazwa" id="nazwa" placeholder="Twoja nazwa użytkownika" class="form-control">
+                        <div id="nazwazajeta" class="col-12 text-danger d-none">Nazwa użytkownika jest już zajęta!</div>
                     </div>
                     <div class="form-group col-10 offset-1 col-md-8 offset-md-2 pb-3">
                         <label for="mail">Mail</label>
-                        <input type="text" name="mail" id="mail" placeholder="Adres email" value="<?php if(isset($_POST['mail'])){ echo $_POST['mail'];}?>" class="form-control">
+                        <input type="text" name="mail" id="mail" placeholder="Adres email" class="form-control">
+                        <div id="zlymail" class="col-12 text-danger d-none">Podany mail nie jest prawidłowy</div>
                     </div>
                     <div class="form-group col-10 offset-1 col-md-8 offset-md-2 pb-3">
                         <label for="email">Hasło</label>
-                        <input type="text" name="haslo" value="<?php if(isset($_POST['haslo'])){ echo $_POST['haslo'];}?>" id="haslo" placeholder="Hasło, które powinieneś znać tylko ty" class="form-control">
+                        <input type="text" name="haslo" id="haslo" placeholder="Hasło, które powinieneś znać tylko ty" class="form-control">
+                        <div id="zaslabehaslo" class="col-12 text-danger d-none">Hasło jest za krótkie!</div>
                     </div>
+                    <div class="form-group col-4 offset-4 col-md-6 offset-md-3 pb-3">
+                        <label for="wiek">Wiek</label>
+                        <input type="text" name="wiek"  id="wiek" placeholder="Twój wiek" class="form-control">
+                        <div id="zlywiek" class="col-12 text-danger d-none">Nieodpowiedni wiek!</div>
+                    </div>
+                    <div class="form-group col-12 pt-1 pb-1">
+                <label for="plec">Płeć</label>
+                <select name="plec" id="plec">
+                    <option value="Mężczyzna">Mężczyzna</option>
+                    <option value="Kobieta">Kobieta</option>
+                    <option value="Świder">Ni pies, ni wydra, coś koło świdra</option>
+                </select>
+            </div>
                 </div>
-                <label class="form-check-label col-12 mb-4 mb-md-5">
+                <label title="Zaznaczając opcję 'zapamiętaj mnie' akceptujesz pliki cookies" class="form-check-label col-12 mb-4 mb-md-2">
                         <input type="checkbox" name="zapamietajhaslo" id="zapamietajhaslo" value="1" class="form-check-input">
                         Zapamiętaj mnie
                     </label>
-                <button type="submit" class="btn btn-lg btn-primary">Zarejestruj się</button>
+                <button type="submit" title="Klikając przycisk 'Zarajestruj się' akceptujesz regulamin" class="btn btn-lg btn-primary">Zarejestruj się</button>
             </form>
-            <p class="pt-3">Masz już konto? <a href="zalogujsie.php">Zaloguj się!</a></p>
+            <p class="pt-1 pt-md-3">Masz już konto? <a href="zalogujsie.php">Zaloguj się!</a></p>
         </div>
     </div>
 </div>
-<!-- form jeszcze nie skonczyony -->
-
+<script>
+    if(<?php if(isset($_SESSION['nazwaztextarea'])){ $czy=true; }else{$czy=false;} echo $czy; ?>==true)
+    {
+        document.getElementById('nazwa').value='<?php echo $_SESSION['nazwaztextarea']; ?>';
+        document.getElementById('mail').value='<?php echo $_SESSION['mailztextarea']; ?>';
+        document.getElementById('haslo').value='<?php echo $_SESSION['hasloztextarea']; ?>';
+        document.getElementById('wiek').value='<?php echo $_SESSION['wiekztextarea']; ?>';
+    }
+    if(<?php echo $_SESSION['nazwajestzajeta']; ?>==1)
+{
+document.getElementById('nazwazajeta').classList.remove('d-none');
+document.getElementById('nazwa').classList.add('is-invalid');
+}
+if(<?php echo $_SESSION['haslozakrotkie']; ?>==1)
+{
+document.getElementById('zaslabehaslo').classList.remove('d-none');
+document.getElementById('haslo').classList.add('is-invalid');
+}
+if(<?php echo $_SESSION['nieodpowideniwiek']; ?>==1)
+{
+document.getElementById('zlywiek').classList.remove('d-none');
+document.getElementById('wiek').classList.add('is-invalid');
+}
+    </script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>     

@@ -54,7 +54,7 @@ if(isset($_COOKIE['nazwa'])&&isset($_SESSION['nazwa'])==false){
                         <input type="text" name="haslo" value="<?php if(isset($_POST['haslo'])){ echo $_POST['haslo'];}?>" id="haslo" placeholder="Hasło, które powinieneś znać tylko ty" class="form-control">
                     </div>
                 </div>
-                <label class="form-check-label col-12 mb-4 mb-md-5">
+                <label title="Zaznaczając opcję 'zapamiętaj mnie' akceptujesz pliki cookies"  class="form-check-label col-12 mb-4 mb-md-5">
                         <input type="checkbox" name="zapamietajhaslo" id="zapamietajhaslo" value="1" class="form-check-input">
                         Zapamiętaj mnie
                     </label>
