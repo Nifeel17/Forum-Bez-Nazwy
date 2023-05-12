@@ -11,6 +11,10 @@ session_start();
     <title>Konto</title>
 </head>
 <?php
+if(isset($_GET['ID'])==false)
+{
+    header("Location: index.php");
+}
 $id=$_GET['ID'];
 require_once "connect.php";
     $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
@@ -20,6 +24,8 @@ require_once "connect.php";
         $wiersz=$rezultat->fetch_assoc();
         $nazwatego=$wiersz['nazwa'];
         $plectego=$wiersz['plec'];
+        $idtego=$wiersz['ID'];
+        $rangatego=$wiersz['ranga'];
      }
 ?>
 <body>
@@ -33,9 +39,9 @@ require_once "connect.php";
                 <div class="navbar-nav mr-auto">
                     <a href="index.php" class="nav-link nav-item">Strona główna</a>
                     <a href="forum.php" class="nav-link nav-item">Forum</a>
-                    <a href="<?php if(isset($_SESSION['nazwa'])){ $id=$_SESSION['ID']; echo 'konto.php?ID=',$id; } else{ echo 'zalogujsie.php';} ?>" class="nav-link nav-item active"><?php if(isset($_SESSION['nazwa'])) {echo $_SESSION['nazwa'];}else{echo "Konto";} ?></a>
-                    <a href="#" class="nav-link nav-item">Znajomi</a>
-                    <a href="#" class="nav-link nav-item">Autor</a>
+                    <a href="<?php if(isset($_SESSION['nazwa'])){ $id=$_SESSION['ID']; echo 'konto.php?ID=',$id; } else{ echo 'zalogujsie.php';} ?>" class="nav-link nav-item <?php if($id==$idtego){ echo "active";} ?>"><?php if(isset($_SESSION['nazwa'])) {echo $_SESSION['nazwa'];}else{echo "Konto";} ?></a>
+                    <a href="znajomi.php" class="nav-link nav-item <?php if($id!=$idtego){ echo "active";} ?>">Znajomi</a>
+                    <a href="autor.php" class="nav-link nav-item">Autor</a>
                 </div>
                 <span class="navbar-text d-none d-md-block"><?php echo date('d/m'), "/20", date("y"); ?></span>
                 <span class="pl-5 navbar-text d-none d-md-block"></span>
@@ -47,12 +53,98 @@ require_once "connect.php";
             <div class="col-12 col-lg-5 border text-center">
                 <p class="display-4 pt-3"><?php echo $nazwatego; ?></p>
                 <p style="font-family:Helvetica; font-size:24px;"><?php echo $plectego; ?></p>
-                <p style="font-family:Helvetica; font-size:28px;">Ranga: <?php echo "rangabedzie";?></p>
-                <?php?><!-- tutaj bedzie przycisk do dodania znajomego jesli nie jest na liscie, ale dopiero trzeba zrobicx system znajomych-->
+                <p style="font-family:Helvetica; font-size:28px;">Ranga: <?php echo $rangatego;?></p>
+                <?php 
+                $czyprzyciskwyswietlony=0;
+                $sql="SELECT * FROM zaproszenia";
+                if(isset($_SESSION['ID']))
+                {
+                    if($rezultaty=@$polaczenie->query($sql))
+                    {
+                        while($wiersze=mysqli_fetch_assoc($rezultaty))
+                        {
+                            $zapraszajacyID=$wiersze['IDzapraszajacego'];
+                            $zaproszonyID=$wiersze['IDzaproszonego'];
+                            if($zaproszonyID==$_SESSION['ID']&&$zapraszajacyID==$idtego)
+                            {
+                                echo"<a href='zaakceptujzapro.php?IDzapro=$idtego'><button class='mb-2 btn btn-primary btn-lg'>Zaakceptuj zaproszenie</button></a>";
+                                $czyprzyciskwyswietlony=1;
+                            }
+                            else if($zapraszajacyID==$_SESSION['ID']&&$zaproszonyID==$idtego)
+                            {
+                                echo "<button class='btn btn-outline-primary btn-lg mb-2' disabled>Wysłano zaproszenie</button><br>";
+                                echo "<a href='anulujzaproszenie.php?IDanulowanego=$idtego'><button class='btn btn-danger btn-lg mb-2'>Anuluj zaproszenie</button></a>";
+                                $czyprzyciskwyswietlony=1;
+                            }
+                        }
+                    }
+                    $sql="SELECT * FROM znajomi";
+                    if($czyprzyciskwyswietlony==0)
+                    {
+                        if($rezultaty2=@$polaczenie->query($sql))
+                        {
+                            while($wiersze2=mysqli_fetch_assoc($rezultaty2))
+                            {
+                                $ID1=$wiersze2['ID1'];
+                                $ID2=$wiersze2['ID2'];
+                                if( ($ID1==$idtego && $ID2==$_SESSION['ID']) || ($ID1==$_SESSION['ID'] && $idtego==$ID2))
+                                {
+                                    if($czyprzyciskwyswietlony==0)
+                                    {
+                                        echo "<a href='usunznajomego.php?IDznajdousuniecia=$idtego'><button class='btn btn-danger btn-lg mb-2'>Usuń znajomego</button></a>";
+                                    }
+                                    $czyprzyciskwyswietlony=1;
+                                }
+                            }
+                        }
+                    }
+                    $twojekurdeid=$_SESSION['ID'];
+                    if($czyprzyciskwyswietlony==0 && $idtego!=$twojekurdeid)
+                    {
+                        echo "<a href='dodajznajomego.php?IDznajdododania=$idtego'><button class='btn btn-primary btn-lg mb-2'>Dodaj do znajomych</button></a>";
+                                $czyprzyciskwyswietlony=1;
+                    }
+                }
+                ?>
+
+                
             </div>
-            <div class="col-12 col-lg-7 border">
-            f
-            </div>
+
+
+
+
+            <div class="col-12 mt-4 col-lg-7 mt-lg-0 border">
+                <div class='pt-5 display-4 pt-md-1 text-center'>Znajomi użytkownika <?php echo $nazwatego; ?></div>
+                        <?php
+                        $sql="SELECT * FROM znajomi WHERE ID1='$idtego' OR ID2='$idtego'";
+                        if($rezultataki=@$polaczenie->query($sql))
+                    {
+                        $liczbauzytkowanikow=$rezultataki->num_rows;
+                        if($liczbauzytkowanikow!=0)
+                        {
+                            echo "<table class='my-5 offset-2 offset-md-0 offset-xl-2 table table-striped table-hover table-responsive'><tr><th>Nazwa</th><th>Znajomy od</th><th>O znajomym</th></tr>";
+                            while($rowki=mysqli_fetch_assoc($rezultataki))
+                            {
+                                $nazwaznaj=$rowki['nazwa1'];
+                                $idznaj=$rowki['ID1'];
+                                if($nazwaznaj==$nazwatego)
+                                {
+                                    $nazwaznaj=$rowki['nazwa2'];
+                                    $idznaj=$rowki['ID2'];
+                                }
+                                $data_dodania_znaj=$rowki['data_dodania'];
+                                echo "<tr><th>$nazwaznaj</th><td>$data_dodania_znaj</td><td><a href='konto.php?ID=$idznaj'><button class='btn btn-primary'>Zobacz</button></a><td></tr>";
+                            }  
+                            echo "</table>";
+                        }
+                        else{
+                            echo "<div class='pt-5 offset-1 text-center col-10' style='font-size:24px;'>Użytkownik nie posiada żadnych znajomych. Możesz zostać tym pierwszym!</div>";
+                       } 
+                    }
+                              
+                        ?>
+                </div>
+            </div> 
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

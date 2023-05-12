@@ -48,13 +48,6 @@ if(isset($_SESSION['nazwa']))
     }
 }
 
-if(isset($_COOKIE['nazwa'])){
-    echo $_COOKIE['nazwa'];
-}
-
-if(isset($_SESSION['nazwa'])){
-    echo $_SESSION['nazwa'];
-}
 ?>
 
 <html lang="en">
@@ -78,8 +71,8 @@ if(isset($_SESSION['nazwa'])){
                     <a class="nav-link nav-item active">Strona główna</a>
                     <a href="forum.php" class="nav-link nav-item">Forum</a>
                     <a href="<?php if(isset($_SESSION['nazwa'])){ $id=$_SESSION['ID']; echo 'konto.php?ID=',$id; } else{ echo 'zalogujsie.php';} ?>" class="nav-link nav-item"><?php if(isset($_SESSION['nazwa'])) {echo $_SESSION['nazwa'];}else{echo "Konto";} ?></a>
-                    <a href="#" class="nav-link nav-item">Znajomi</a>
-                    <a href="#" class="nav-link nav-item">Autor</a>
+                    <a href="znajomi.php" class="nav-link nav-item">Znajomi</a>
+                    <a href="autor.php" class="nav-link nav-item">Autor</a>
                 </div>
                 <span class="navbar-text d-none d-md-block"><?php echo date('d/m'), "/20", date("y"); ?></span>
                 <span class="pl-5 navbar-text d-none d-md-block"></span>

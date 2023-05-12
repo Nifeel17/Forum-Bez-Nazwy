@@ -25,8 +25,8 @@ if(isset($_SESSION['nazwa'])||isset($_COOKIE['nazwa'])){
                     <a href="index.php" class="nav-link nav-item">Strona główna</a>
                     <a href="forum.php" class="nav-link nav-item">Forum</a>
                     <a class="nav-link nav-item active">Konto</a>
-                    <a href="#" class="nav-link nav-item">Znajomi</a>
-                    <a href="#" class="nav-link nav-item">Autor</a>
+                    <a href="rejestracja.php" class="nav-link nav-item">Znajomi</a>
+                    <a href="autor.php" class="nav-link nav-item">Autor</a>
                 </div>
                 <span class="navbar-text d-none d-md-block"></span>
                 <span class="pl-5 navbar-text d-none d-md-block"></span>

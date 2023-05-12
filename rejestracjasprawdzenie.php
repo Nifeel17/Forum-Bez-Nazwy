@@ -22,62 +22,45 @@ if(isset($_SESSION['nazwa'])||isset($_COOKIE['nazwa'])){
     if($rezultat=@$polaczenie->query($sql))
     {
         $dlugoschaslo=strlen($haslo);
-            $liczbauzytkowanikow=$rezultat->num_rows;
-            if($liczbauzytkowanikow==0)
+        echo $dlugoschaslo;
+        $liczbauzytkowanikow=$rezultat->num_rows;
+        if($liczbauzytkowanikow!=0)
+        {
+            $_SESSION['nazwajestzajeta']=1;
+        }
+        if($dlugoschaslo<5)
+        {
+            $_SESSION['haslozakrotkie']=1;
+        }
+        if($wiek<10||$wiek>100)
+        {
+            $_SESSION['nieodpowideniwiek']=1;
+        }
+        if($_SESSION['nieodpowideniwiek']==1 || $_SESSION['haslozakrotkie']==1 || $_SESSION['nazwajestzajeta']==1)
+        {
+            header("Location: rejestracja.php");
+        }
+        else
+        {
+            $data=date("y-m-d");
+            if($polaczenie->query("INSERT INTO uzytkownicy VALUES(default,'$nazwa','$haslo','$data','$plec','$mail','$wiek', 'Początkujący')"))
             {
-                if($dlugoschaslo<5)
-                {
-                    $_SESSION['haslozakrotkie']=1;
-                    if($wiek<10||$wiek>100)
-                    {
-                        $_SESSION['nieodpowideniwiek']=1;
-                    }
-                    header("Location: rejestracja.php");
-                }
-                else if($wiek<10||$wiek>100)
-                {
-                    $_SESSION['nieodpowideniwiek']=1;
-                    header("Location: rejestracja.php");
-                }
-                else
-                {
-                    $data=date("y-m-d");
-                    if($polaczenie->query("INSERT INTO uzytkownicy VALUES(default,'$nazwa','$haslo','$data','$plec','$mail','$wiek')"))
-                    {
-                        $_SESSION['haslo']=$haslo;
-                        $_SESSION['plec']=$plec;
-                        $_SESSION['mail']=$mail;
-                        $_SESSION['wiek']=$wiek;
-                        $_SESSION['data-dolaczenia']=$data;
-                        $_SESSION['nazwa']=$nazwa;
-                        if(isset($_POST['zapamietajhaslo'])){
-                            $zapamietajhaslo=$_POST['zapamietajhaslo']; 
-                            if($zapamietajhaslo==1){
-                                $_SESSION['zgodanacookies']=1;
-                                setcookie("nazwa","$nazwa",time() + (86400 * 30));
-                            }
-                        }
-                        header("Location: index.php");
+                $_SESSION['haslo']=$haslo;
+                $_SESSION['plec']=$plec;
+                $_SESSION['mail']=$mail;
+                $_SESSION['wiek']=$wiek;
+                $_SESSION['data-dolaczenia']=$data;
+                $_SESSION['nazwa']=$nazwa;
+                if(isset($_POST['zapamietajhaslo'])){
+                    $zapamietajhaslo=$_POST['zapamietajhaslo']; 
+                    if($zapamietajhaslo==1){
+                        $_SESSION['zgodanacookies']=1;
+                        setcookie("nazwa","$nazwa",time() + (86400 * 30));
                     }
                 }
+                header("Location: index.php");
             }
-            else{
-                $_SESSION['nazwajestzajeta']=1;
-               header("Location: rejestracja.php");
-            }
-            if($dlugoschaslo<5)
-            {
-                if($wiek<10||$wiek>100)
-                {
-                $_SESSION['nieodpowideniwiek']=1;
-                }
-                $_SESSION['haslozakrotkie']=1;
-                header("Location: rejestracja.php");
-            }
-            if($wiek<10||$wiek>100)
-            {
-                $_SESSION['nieodpowideniwiek']=1;
-                header("Location: rejestracja.php");
-            }
+        }
     }
+
 ?>
