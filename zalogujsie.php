@@ -48,10 +48,12 @@ if(isset($_COOKIE['nazwa'])&&isset($_SESSION['nazwa'])==false){
                     <div class="form-group col-10 offset-1 col-md-8 offset-md-2 pb-3">
                         <label for="name">Nazwa użytkownika</label>
                         <input type="text" name="nazwa" id="nazwa" placeholder="Twoja nazwa użytkownika" value="<?php if(isset($_POST['nazwa'])){ echo $_POST['nazwa'];}?>" class="form-control">
+                        <div id="nazwanieistnieje" class="col-12 text-danger d-none">Nazwa użytkownika jest nieprawidłowa!</div>
                     </div>
                     <div class="form-group col-10 offset-1 col-md-8 offset-md-2 pb-3">
                         <label for="email">Hasło</label>
                         <input type="text" name="haslo" value="<?php if(isset($_POST['haslo'])){ echo $_POST['haslo'];}?>" id="haslo" placeholder="Hasło, które powinieneś znać tylko ty" class="form-control">
+                        <div id="hasloniepoprawne" class="col-12 text-danger d-none">Podane hasło jest błędne!</div>
                     </div>
                 </div>
                 <label title="Zaznaczając opcję 'zapamiętaj mnie' akceptujesz pliki cookies"  class="form-check-label col-12 mb-4 mb-md-5">
@@ -81,6 +83,8 @@ if(isset($_POST['nazwa']))
             echo "<script>
             document.getElementById('nazwa').classList.remove('is-valid');
             document.getElementById('nazwa').classList.add('is-invalid');
+            document.getElementById('nazwanieistnieje').classList.remove('d-none');
+            document.getElementById('hasloniepoprawne').classList.add('d-none');
             </script>";
         }
         else if($liczbauzytkowanikow==1)
@@ -88,6 +92,7 @@ if(isset($_POST['nazwa']))
             echo "<script>
             document.getElementById('nazwa').classList.remove('is-invalid');
             document.getElementById('nazwa').classList.add('is-valid');
+            document.getElementById('nazwanieistnieje').classList.add('d-none');
             </script>";
             $haslozbazy=$wiersz['haslo'];
             if($haslozbazy==$haslo)
@@ -116,6 +121,7 @@ if(isset($_POST['nazwa']))
                 echo "<script>
                 document.getElementById('haslo').classList.remove('is-valid');
                 document.getElementById('haslo').classList.add('is-invalid');
+                document.getElementById('hasloniepoprawne').classList.remove('d-none');
                 </script>"; 
             }
         }

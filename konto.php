@@ -1,4 +1,4 @@
-<?php
+<?php //dodac system logownaia z cookies automatyczny
 session_start();
 ?>
 <!DOCTYPE html>
@@ -25,6 +25,7 @@ require_once "connect.php";
         $nazwatego=$wiersz['nazwa'];
         $plectego=$wiersz['plec'];
         $idtego=$wiersz['ID'];
+        $wiektego=$wiersz['wiek'];
         $rangatego=$wiersz['ranga'];
      }
 ?>
@@ -48,63 +49,84 @@ require_once "connect.php";
             </div>
         </div>
     </nav>
+     
+    <div class="jumbotron d-none d-lg-block jumbotron-fluid bg-success border text-black text-center" style="background-image: url('banner1.png'); background-size: cover;">
+        <div class="container">
+            <h3 class="display-3"><?php echo $nazwatego; ?></h3>
+            <p style="font-family:Helvetica; font-size:28px;">Ranga: <?php echo $rangatego;?></p>
+        </div>
+    </div>
+
+
     <div class="container">
         <div class="row pt-5">
             <div class="col-12 col-lg-5 border text-center">
                 <p class="display-4 pt-3"><?php echo $nazwatego; ?></p>
-                <p style="font-family:Helvetica; font-size:24px;"><?php echo $plectego; ?></p>
+                <p style="font-family:Helvetica; font-size:24px;">Płeć: <?php echo $plectego; ?></p>
+                <p style="font-family:Helvetica; font-size:24px;">Wiek: <?php echo $wiektego; ?></p>
                 <p style="font-family:Helvetica; font-size:28px;">Ranga: <?php echo $rangatego;?></p>
                 <?php 
                 $czyprzyciskwyswietlony=0;
-                $sql="SELECT * FROM zaproszenia";
-                if(isset($_SESSION['ID']))
+                if(isset($_SESSION['nazwa']))
                 {
-                    if($rezultaty=@$polaczenie->query($sql))
+                    if($nazwatego==$_SESSION['nazwa'])
                     {
-                        while($wiersze=mysqli_fetch_assoc($rezultaty))
-                        {
-                            $zapraszajacyID=$wiersze['IDzapraszajacego'];
-                            $zaproszonyID=$wiersze['IDzaproszonego'];
-                            if($zaproszonyID==$_SESSION['ID']&&$zapraszajacyID==$idtego)
-                            {
-                                echo"<a href='zaakceptujzapro.php?IDzapro=$idtego'><button class='mb-2 btn btn-primary btn-lg'>Zaakceptuj zaproszenie</button></a>";
-                                $czyprzyciskwyswietlony=1;
-                            }
-                            else if($zapraszajacyID==$_SESSION['ID']&&$zaproszonyID==$idtego)
-                            {
-                                echo "<button class='btn btn-outline-primary btn-lg mb-2' disabled>Wysłano zaproszenie</button><br>";
-                                echo "<a href='anulujzaproszenie.php?IDanulowanego=$idtego'><button class='btn btn-danger btn-lg mb-2'>Anuluj zaproszenie</button></a>";
-                                $czyprzyciskwyswietlony=1;
-                            }
-                        }
+                        echo "<a href='edytujprofil.php'><button title='Wkrótce dodane' class='btn btn-lg btn-info' disabled>Edytuj swój profil</button></a>";
+                        echo "<br><a href='wylogujsie.php'><button class='btn btn-lg btn-danger mt-3'>Wyloguj sie</button></a>";
                     }
-                    $sql="SELECT * FROM znajomi";
-                    if($czyprzyciskwyswietlony==0)
+                }
+                else{
+                    $sql="SELECT * FROM zaproszenia";
+                    if(isset($_SESSION['ID']))
                     {
-                        if($rezultaty2=@$polaczenie->query($sql))
+                        if($rezultaty=@$polaczenie->query($sql))
                         {
-                            while($wiersze2=mysqli_fetch_assoc($rezultaty2))
+                            while($wiersze=mysqli_fetch_assoc($rezultaty))
                             {
-                                $ID1=$wiersze2['ID1'];
-                                $ID2=$wiersze2['ID2'];
-                                if( ($ID1==$idtego && $ID2==$_SESSION['ID']) || ($ID1==$_SESSION['ID'] && $idtego==$ID2))
+                                $zapraszajacyID=$wiersze['IDzapraszajacego'];
+                                $zaproszonyID=$wiersze['IDzaproszonego'];
+                                if($zaproszonyID==$_SESSION['ID']&&$zapraszajacyID==$idtego)
                                 {
-                                    if($czyprzyciskwyswietlony==0)
-                                    {
-                                        echo "<a href='usunznajomego.php?IDznajdousuniecia=$idtego'><button class='btn btn-danger btn-lg mb-2'>Usuń znajomego</button></a>";
-                                    }
+                                    echo"<a href='zaakceptujzapro.php?IDzapro=$idtego'><button class='mb-2 btn btn-primary btn-lg'>Zaakceptuj zaproszenie</button></a>";
+                                    $czyprzyciskwyswietlony=1;
+                                }
+                                else if($zapraszajacyID==$_SESSION['ID']&&$zaproszonyID==$idtego)
+                                {
+                                    echo "<button class='btn btn-outline-primary btn-lg mb-2' disabled>Wysłano zaproszenie</button><br>";
+                                    echo "<a href='anulujzaproszenie.php?IDanulowanego=$idtego'><button class='btn btn-danger btn-lg mb-2'>Anuluj zaproszenie</button></a>";
                                     $czyprzyciskwyswietlony=1;
                                 }
                             }
                         }
-                    }
-                    $twojekurdeid=$_SESSION['ID'];
-                    if($czyprzyciskwyswietlony==0 && $idtego!=$twojekurdeid)
-                    {
-                        echo "<a href='dodajznajomego.php?IDznajdododania=$idtego'><button class='btn btn-primary btn-lg mb-2'>Dodaj do znajomych</button></a>";
-                                $czyprzyciskwyswietlony=1;
+                        $sql="SELECT * FROM znajomi";
+                        if($czyprzyciskwyswietlony==0)
+                        {
+                            if($rezultaty2=@$polaczenie->query($sql))
+                            {
+                                while($wiersze2=mysqli_fetch_assoc($rezultaty2))
+                                {
+                                    $ID1=$wiersze2['ID1'];
+                                    $ID2=$wiersze2['ID2'];
+                                    if( ($ID1==$idtego && $ID2==$_SESSION['ID']) || ($ID1==$_SESSION['ID'] && $idtego==$ID2))
+                                    {
+                                        if($czyprzyciskwyswietlony==0)
+                                        {
+                                            echo "<a href='usunznajomego.php?IDznajdousuniecia=$idtego'><button class='btn btn-danger btn-lg mb-2'>Usuń znajomego</button></a>";
+                                        }
+                                        $czyprzyciskwyswietlony=1;
+                                    }
+                                }
+                            }
+                        }
+                        $twojekurdeid=$_SESSION['ID'];
+                        if($czyprzyciskwyswietlony==0 && $idtego!=$twojekurdeid)
+                        {
+                            echo "<a href='dodajznajomego.php?IDznajdododania=$idtego'><button class='btn btn-primary btn-lg mb-2'>Dodaj do znajomych</button></a>";
+                                    $czyprzyciskwyswietlony=1;
+                        }
                     }
                 }
+                
                 ?>
 
                 

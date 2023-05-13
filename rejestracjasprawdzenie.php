@@ -58,7 +58,12 @@ if(isset($_SESSION['nazwa'])||isset($_COOKIE['nazwa'])){
                         setcookie("nazwa","$nazwa",time() + (86400 * 30));
                     }
                 }
-                header("Location: index.php");
+                if($rezultacik=@$polaczenie->query("SELECT * FROM uzytkownicy WHERE nazwa='$nazwa'"))
+                {
+                    $wierszyk=$rezultacik->fetch_assoc();
+                    $_SESSION['ID']=$wierszyk['ID'];
+                    header("Location: index.php");
+                }
             }
         }
     }
