@@ -62,7 +62,11 @@ if(isset($_SESSION['nazwa'])||isset($_COOKIE['nazwa'])){
                 {
                     $wierszyk=$rezultacik->fetch_assoc();
                     $_SESSION['ID']=$wierszyk['ID'];
-                    header("Location: index.php");
+                    $idkolgi=$_SESSION['ID'];
+                    if($polaczenie->query("INSERT INTO profil VALUES(default,'$idkolgi','1','Biały')"))
+                    {
+                        header("Location: index.php");
+                    }
                 }
             }
         }
