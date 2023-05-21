@@ -107,7 +107,7 @@ if(isset($_SESSION['nazwa']))
                                 if(isset($_SESSION['ID'])){
                                     $twojeidhihi=$_SESSION['ID'];
                                     $sql2="SELECT * FROM znajomi WHERE (ID1='$idautora' OR ID2='$idautora') AND (ID1='$twojeidhihi' OR ID2='$twojeidhihi')";
-                                    if($rezultat2=@$polaczenie->query($sql))
+                                    if($rezultat2=@$polaczenie->query($sql2))
                                     {
                                         $liczbauzytkowanikow=$rezultat2->num_rows;
                                         if($liczbauzytkowanikow>0&&$nazwaautora!=$_SESSION['nazwa'])
