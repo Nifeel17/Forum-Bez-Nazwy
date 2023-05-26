@@ -50,10 +50,15 @@ if(isset($_SESSION['nazwa']))
 <?php
 $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
 $IDposta=$_GET['IDposta'];
-$sql="SELECT * FROM posty WHERE IDposta='$IDposta'";
+$sql="SELECT * FROM posty WHERE ID='$IDposta'";
 if($rezultat=@$polaczenie->query($sql))
  {
     $wiersz=$rezultat->fetch_assoc();
+    $nazwaposta=$wiersz['nazwaposta'];
+    $nazwaautora=$wiersz['Nazwaautora'];
+    $IDautora=$wiersz['IDautora'];
+    $datadodania=$wiersz['data_dodania'];
+    $zawartosc=$wiersz['zawartosc'];
  }
 ?>
 <html lang="en">
@@ -62,10 +67,28 @@ if($rezultat=@$polaczenie->query($sql))
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <title><?php echo "" ?></title>
+    <title><?php echo "$nazwaposta" ?></title>
 </head>
 <body>
-    
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+        <a class="pr-5 navbar-brand">Logo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <div class="navbar-nav mr-auto">
+                    <a href="index.php" class="nav-link nav-item">Strona główna</a>
+                    <a href="forum.php" class="nav-link nav-item active">Forum</a>
+                    <a href="<?php $id=$_SESSION['ID']; echo 'konto.php?ID=',$id; ?>" class="nav-link nav-item"><?php echo $_SESSION['nazwa']; ?></a>
+                    <a href="znajomi.php" class="nav-link nav-item">Znajomi</a>
+                    <a href="autor.php" class="nav-link nav-item">Autor</a>
+                </div>
+            <span class="navbar-text d-none d-md-block"><?php echo date('d/m'), "/20", date("y"); ?></span>
+            <span class="pl-5 navbar-text d-none d-md-block"></span>
+        </div>
+    </div>
+</nav>
 
 
 

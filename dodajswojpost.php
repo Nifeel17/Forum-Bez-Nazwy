@@ -86,12 +86,12 @@ else{
                 <div class="form-row">
                     <div class="form-group col-10 offset-1 col-md-8 offset-md-2 pb-3">
                         <label for="nazwaposta">Tytuł</label>
-                        <input type="text" name="nazwaposta" id="nazwaposta" placeholder="Tytuł twojego posta" class="form-control">
+                        <input type="text" name="nazwaposta" id="nazwaposta" placeholder="Tytuł twojego posta" class="form-control" value="<?php if(isset($_SESSION['nazwapostazPOST'])){ echo $_SESSION['nazwapostazPOST'];} ?>">
                         <div id="nazwapostazajeta" class="col-12 text-danger d-none">Nazwa posta jest juz zajęta!</div>
                     </div>
                     <div class="form-group col-10 offset-1 col-md-8 offset-md-2 pb-3">
                         <label for="zawartoscposta">Zawartość posta</label>
-                        <textarea name="zawartoscposta" style="min-height:100px;" id="zawartoscposta" placeholder="Zawartość twojego posta" class="form-control"></textarea>
+                        <textarea name="zawartoscposta" style="min-height:100px;" id="zawartoscposta" placeholder="Zawartość twojego posta" class="form-control"><?php if(isset($_SESSION['zawartoscpostazPOST'])){ echo $_SESSION['zawartoscpostazPOST']; } ?></textarea>
                         <div id="zladlugoscposta" class="col-12 text-danger d-none">Nieopdowiednia długość posta (od 20 do 500 znaków)</div>
                     </div>
                 </div>
@@ -100,7 +100,28 @@ else{
         </div>
     </div>
 </div>
-    
+
+<script>
+    if(<?php if(isset($_SESSION['bladnazwyposta'])){ echo "1"; } else { echo "0"; }  ?>==1)
+    {
+        document.getElementById('nazwapostazajeta').classList.remove('d-none');
+        document.getElementById('nazwaposta').classList.add('is-invalid');
+    }
+    else if(<?php if(isset($_SESSION['nazwapostazPOST'])){ echo "1"; } ?> ==1){
+        document.getElementById('nazwaposta').classList.add('is-valid');
+    }
+    if(<?php if(isset($_SESSION['bladzawartosciposta'])){ echo "1"; } else { echo "0"; }  ?>==1)
+    {
+        document.getElementById('zladlugoscposta').classList.remove('d-none');
+        document.getElementById('zawartoscposta').classList.add('is-invalid');
+    }
+    else if(<?php if(isset($_SESSION['zawartoscpostazPOST'])){ echo "1"; } ?> ==1){
+        document.getElementById('zawartoscposta').classList.add('is-valid');
+    }
+</script>
+
+
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
