@@ -90,7 +90,17 @@ if($rezultat=@$polaczenie->query($sql))
     </div>
 </nav>
 
-
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12 offset-0 text-center col-lg-10 offset-lg-1">
+            <div class="display-2"><?php echo $nazwaposta; ?></div>
+            <div class="display-4"><a style="text-decoration: none; color:black;" href="<?php echo "konto.php?ID=$IDautora"; ?>"><?php echo $nazwaautora; ?></a></div>
+            <div class="mt-5" style="font-size:24px;"><?php echo $zawartosc; ?></div>
+            <div class="col-10 offset-1 mt-3 text-left"><?php echo $datadodania; echo "<br>Liczba polubień: "; $ilelike=1; echo $ilelike; ?></div>
+            <button class="btn btn-primary"><a><?php //tutaj dodac like ?></a></button>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

@@ -45,7 +45,7 @@ if($rezultat=@$polaczenie->query($sql))
         $IDautora=$_SESSION['ID'];
         $nazwaautora=$_SESSION['nazwa'];
         $data=date("y-m-d");
-        $sql="INSERT INTO posty VALUES(default,'$nazwaposta','nazwaautora','$IDautora','$data','$zawartosc')";
+        $sql="INSERT INTO posty VALUES(default,'$nazwaposta','$nazwaautora','$IDautora','$data','$zawartosc')";
         if($polaczenie->query($sql))
         {
             header("Location: forum.php");
