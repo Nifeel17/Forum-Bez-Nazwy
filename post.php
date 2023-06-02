@@ -48,6 +48,7 @@ if(isset($_SESSION['nazwa']))
 ?>
 
 <?php
+require_once "connect.php";
 $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
 $IDposta=$_GET['IDposta'];
 $sql="SELECT * FROM posty WHERE ID='$IDposta'";
@@ -60,6 +61,22 @@ if($rezultat=@$polaczenie->query($sql))
     $datadodania=$wiersz['data_dodania'];
     $zawartosc=$wiersz['zawartosc'];
  }
+ $dodallike=0;
+ $ilelike=0;
+ $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
+ if(isset($_SESSION['nazwa'])){
+    $sql="SELECT * FROM lajki WHERE ID_posta='$IDposta'";
+    if($rezultat=@$polaczenie->query($sql))
+    {
+        while($row=mysqli_fetch_assoc($rezultat))
+        {
+            $ilelike++;
+            if($row['ID_osoby']==$_SESSION['ID']){
+                $dodallike++;
+            }
+        }
+    }
+}
 ?>
 <html lang="en">
 <head>
@@ -80,7 +97,7 @@ if($rezultat=@$polaczenie->query($sql))
                 <div class="navbar-nav mr-auto">
                     <a href="index.php" class="nav-link nav-item">Strona główna</a>
                     <a href="forum.php" class="nav-link nav-item active">Forum</a>
-                    <a href="<?php $id=$_SESSION['ID']; echo 'konto.php?ID=',$id; ?>" class="nav-link nav-item"><?php echo $_SESSION['nazwa']; ?></a>
+                    <a href="<?php if(isset($_SESSION['ID'])){$id=$_SESSION['ID']; echo 'konto.php?ID=',$id;}else{ echo "zalogujsie.php";} ?>" class="nav-link nav-item"><?php if(isset($_SESSION['nazwa'])){echo $_SESSION['nazwa']; }else{ echo "Konto"; }?></a>
                     <a href="znajomi.php" class="nav-link nav-item">Znajomi</a>
                     <a href="autor.php" class="nav-link nav-item">Autor</a>
                 </div>
@@ -96,8 +113,8 @@ if($rezultat=@$polaczenie->query($sql))
             <div class="display-2"><?php echo $nazwaposta; ?></div>
             <div class="display-4"><a style="text-decoration: none; color:black;" href="<?php echo "konto.php?ID=$IDautora"; ?>"><?php echo $nazwaautora; ?></a></div>
             <div class="mt-5" style="font-size:24px;"><?php echo $zawartosc; ?></div>
-            <div class="col-10 offset-1 mt-3 text-left"><?php echo $datadodania; echo "<br>Liczba polubień: "; $ilelike=1; echo $ilelike; ?></div>
-            <button class="btn btn-primary"><a><?php //tutaj dodac like ?></a></button>
+            <div class="col-10 offset-1 mt-3 text-left"><?php echo $datadodania; echo "<br>Liczba polubień: "; echo $ilelike; ?></div>
+            <div class="col-10 offset-1 mt-3 text-left"><a  href="<?php if($dodallike==1){ echo "usunlike.php?IDposta=$IDposta"; }else if(isset($_SESSION['nazwa'])){ echo "dodajlike.php?IDposta=$IDposta"; }else{ echo "zalogujsie.php";} ?>"><button class="btn btn-primary"><?php if($dodallike==1){ echo "Usuń like"; }else{ echo "Lubię to!"; } ?></button></a></div>
         </div>
     </div>
 </div>
