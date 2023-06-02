@@ -136,7 +136,7 @@ if(isset($_SESSION['nazwa']))
                         <h3 class="card-title">Profil</h3>
                         <h4 class="card-subtitle">Personalizowanie swojej strony</h4>
                         <p>Każdy z nas lubi pokazać się od jak najlepszej strony. Teraz jest to możliwe, dzięki personalizowanym stronom profilu! Na co czekasz, personalizuj!</p>
-                        <a href="<?php if(isset($_SESSION['ID'])){ $lu=$_SESSION['ID']; echo "konto.php?ID=$lu"; }else{ echo "zalogujsie.php"; }  ?>" class="btn btn-primary card-link">Personalizuj!</a>
+                        <a href="<?php if(isset($_SESSION['ID'])){ echo "edytujprofil.php"; }else{ echo "zalogujsie.php"; }  ?>" class="btn btn-primary card-link">Personalizuj!</a>
                     </div>
                 </div>
             </div>
