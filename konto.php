@@ -85,6 +85,7 @@ $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
                 <p style="font-family:Helvetica; font-size:24px;">Płeć: <?php echo $plectego; ?></p>
                 <p style="font-family:Helvetica; font-size:24px;">Wiek: <?php echo $wiektego; ?></p>
                 <p style="font-family:Helvetica; font-size:24px;">Ranga: <?php echo $rangatego; ?></p>
+                <a href="postyuzytkownika.php?ID=<?php echo $idtego; ?>"><button class="btn btn-lg mb-2 btn-primary">Posty użytkownika</button></a><br>
                 <?php 
                 $czyprzyciskwyswietlony=0;
                 if(isset($_SESSION['nazwa']))
