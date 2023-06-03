@@ -116,6 +116,7 @@ if($rezultat=@$polaczenie->query($sql))
             <div class="mt-5" style="font-size:24px;"><?php echo $zawartosc; ?></div>
             <div class="col-10 offset-1 mt-3 text-center"><?php echo $datadodania; echo "<br>Liczba polubień: "; echo $ilelike; ?></div>
             <div class="col-10 offset-1 mt-3 text-center"><a  href="<?php if($dodallike==1){ echo "usunlike.php?IDposta=$IDposta"; }else if(isset($_SESSION['nazwa'])){ echo "dodajlike.php?IDposta=$IDposta"; }else{ echo "zalogujsie.php";} ?>"><button class="btn btn-primary"><?php if($dodallike==1){ echo "Usuń like"; }else{ echo "Lubię to!"; } ?></button></a></div>
+            <div class="col-10 offset-1 mt-3 text-center"><a href="forum.php"><button class="btn btn-primary">Powrót do forum</button></a></div>
         </div>
     </div>
 </div>
@@ -140,7 +141,7 @@ if(isset($_SESSION['zawartosckom']))
     <?php
      require_once "connect.php";
      $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
-        $sql="SELECT * FROM komentarze WHERE ID_posta='$IDposta'";
+        $sql="SELECT * FROM komentarze WHERE ID_posta='$IDposta' ORDER BY data_dodania DESC";
         if($rezultat=@$polaczenie->query($sql))
         {
             $ilekomentarzy=$rezultat->num_rows;

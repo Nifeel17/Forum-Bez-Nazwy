@@ -47,6 +47,18 @@ if(isset($_SESSION['nazwa']))
 }
 
 ?>
+<?php
+$sortuj=1;
+if(isset($_GET['sortowanie']))
+{
+    $sortuj=$_GET['sortowanie'];
+    if($sortuj!=1 && $sortuj!=2)
+    {
+        $sortuj=1; 
+    }
+}
+?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -75,7 +87,6 @@ if(isset($_SESSION['nazwa']))
             </div>
         </div>
     </nav>
-
     <div class="jumbotron jumbotron-fluid text-black text-center">
         <div class="container"><h3 class="display-3">Forum</h3>
             <p class="lead"><?php if(isset($_SESSION['nazwa'])==false){echo"Aby móc komentować lub polubić musisz się zalogować";}else{ echo "Baw się, śmiej i ciesz!";} ?></p>
@@ -86,12 +97,28 @@ if(isset($_SESSION['nazwa']))
     </div>
 
 
+    <div class="container mb-3 t-5">
+        <nav>
+            <ul class="pagination pagination-lg">
+                <li class="page-item" id="Odnajnowszych"><a class="page-link" href="forum.php?sortowanie=1">Od najnowszych</a></li>
+                <li class="page-item" id="Odnajstarszych"><a class="page-link" href="forum.php?sortowanie=2">Od najstarszych</a></li>
+            </ul>
+        </nav>
+    </div>
+
     <div class="container">
         <div class="row">
             <?php 
                 require_once "connect.php";
                 $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
-                $sql="SELECT * FROM posty ORDER BY data_dodania DESC";
+                if($sortuj==2)
+                {
+                    $sql="SELECT * FROM posty ORDER BY data_dodania ASC";
+                }
+                else
+                {
+                    $sql="SELECT * FROM posty ORDER BY data_dodania DESC";
+                }
                 if($rezultat=@$polaczenie->query($sql))
                 {
                     while($row=mysqli_fetch_assoc($rezultat))
@@ -125,13 +152,15 @@ if(isset($_SESSION['nazwa']))
                                     echo "<h4 class='card-subtitle'>$nazwaautora</h4>";
                                     echo "<p>$zawartosc</p>";
                                     echo "<p>$datadodania</p>";
-                                    if(isset($_SESSION['nazwa']))
+                                    $sqldolike="SELECT * FROM lajki WHERE ID_posta='$IDposta'";
+                                    require_once "connect.php";
+                                    $polaczeniedolike=@new mysqli($host, $db_user, $db_password, $db_name);
+                                    if($rezultatlike=@$polaczeniedolike->query($sqldolike))
                                     {
-                                       echo "<a href='post.php?IDposta=$IDposta' class='btn btn-primary card-link'>Sprawdz</a>";  
+                                        $ilosclajkow=$rezultatlike->num_rows;
+                                        echo "<p>Polubienia: $ilosclajkow</p>";
                                     }
-                                    else{
-                                        echo "<a href='zalogujsie.php' class='btn btn-primary card-link'>Sprawdz</a>";  
-                                    }
+                                    echo "<a href='post.php?IDposta=$IDposta' class='btn btn-primary card-link'>Sprawdz</a>";  
                                 echo "</div>";
                             echo "</div>";
                         echo "</div>";
@@ -141,7 +170,15 @@ if(isset($_SESSION['nazwa']))
             ?>
         </div>
     </div>
+<?php
+if($sortuj==2){
+    echo "<script>document.getElementById('Odnajstarszych').classList.add('active');</script>";
+}
+else{
+    echo "<script>document.getElementById('Odnajnowszych').classList.add('active');</script>";
+}
 
+?>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
