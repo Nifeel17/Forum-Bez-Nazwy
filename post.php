@@ -121,7 +121,13 @@ if($rezultat=@$polaczenie->query($sql))
     </div>
 </div>
 <div class="container">
-    
+<?php
+if(isset($_SESSION['zawartosckom']))
+{
+    echo "<div class='alert alert-info mt-5' role='alert'>Zawartość komentarza powinna zawierać minimum 10 znaków!<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span></button></div>";
+    unset($_SESSION['zawartosckom']);
+}
+?>
     <div class="col-12 offset-0 col-lg-10 offset-1 pt-3 mt-3">
         <h4 class="offset-0 col-10 offset-lg-1">Dodaj komentarz</h4>
         <form method="POST" action="dodajkomentarz.php?ID=<?php echo $IDposta; ?>">
@@ -129,13 +135,6 @@ if($rezultat=@$polaczenie->query($sql))
             <button onclick="submit"  class="btn btn-primary offset-0 col-10 offset-lg-1">Dodaj komentarz!</button>
         </form>
     </div>
-<?php
-if(isset($_SESSION['zawartosckom']))
-{
-    echo "<div class='alert alert-info mt-5' role='alert'>Zawartość posta powinna zawierać minimum 10 znaków!<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span></button></div>";
-    unset($_SESSION['zawartosckom']);
-}
-?>
 </div>
 <div class="container py-3">
     <?php

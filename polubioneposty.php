@@ -72,7 +72,7 @@ require_once "connect.php";
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posty <?php echo $nazwatego; ?></title>
+    <title>Polubione posty <?php echo $nazwatego; ?></title>
 </head>
 <?php
     $kolortla="Biały";
@@ -124,59 +124,19 @@ require_once "connect.php";
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12 my-4 text-center">
-                <a href="konto.php?ID=<?php echo $idtego; ?>"><button class="btn btn-lg btn-primary">Powrót do strony użytkownika</button></a>
-            </div>
-            <?php
-            require_once "connect.php";
-            $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
-                $sql="SELECT * FROM posty WHERE IDautora='$idtego' ORDER BY data_dodania DESC";
-if($rezultat=@$polaczenie->query($sql))
-{
-    $ilepostow=$rezultat->num_rows;
-    if($ilepostow==0)
+<?php
+    require_once "connect.php";
+    $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
+    $sql="SELECT * FROM lajki WHERE ID_osoby='$id'";
+    if($rezultat=@$polaczenie->query($sql))
     {
-        echo "<div class='col-12 mt-3 text-center'><h3>Użytkownik nie posiada postów!<h3></div>";
+        while($row=mysqli_fetch_assoc($rezultat)){
+            $IDposta=$row['ID_posta'];
+        }
     }
-    while($row=mysqli_fetch_assoc($rezultat))
-    {
-        $datadodania=$row['data_dodania'];
-        $zawartosc=$row['zawartosc'];
-        $nazwaposta=$row['nazwaposta'];
-        $IDposta=$row['ID'];
-        echo "<div class='col-12 col-lg-6'>";
-            echo "<div class='card mb-3'>";
-                echo "<div class='card-body'>";
-                    echo "<h3 class='card-title'>$nazwaposta</h3>";
-                    echo "<p>$zawartosc</p>";
-                    echo "<p>$datadodania</p>";
-                    $sqldolike="SELECT * FROM lajki WHERE ID_posta='$IDposta'";
-                    require_once "connect.php";
-                    $polaczeniedolike=@new mysqli($host, $db_user, $db_password, $db_name);
-                    if($rezultatlike=@$polaczeniedolike->query($sqldolike))
-                    {
-                        $ilosclajkow=$rezultatlike->num_rows;
-                        echo "<p>Polubienia: $ilosclajkow</p>";
-                    }
-                    echo "<a href='post.php?IDposta=$IDposta' class='btn btn-primary card-link'>Sprawdz</a>";  
-                echo "</div>";
-            echo "</div>";
-        echo "</div>";
-    }
-}
-
 ?>
-
-
-
-        </div>
-    </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>   
-</body>
-</html>
-
-
+        </body>
+        </html>
