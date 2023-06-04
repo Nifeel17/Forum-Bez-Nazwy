@@ -21,12 +21,19 @@ require_once "connect.php";
     $sql="SELECT * FROM uzytkownicy WHERE ID='$id'";
     if($rezultat=@$polaczenie->query($sql))
      {
-        $wiersz=$rezultat->fetch_assoc();
-        $nazwatego=$wiersz['nazwa'];
-        $plectego=$wiersz['plec'];
-        $idtego=$wiersz['ID'];
-        $wiektego=$wiersz['wiek'];
-        $rangatego=$wiersz['ranga'];
+        $czyistnieje=$rezultat->num_rows;
+        if($czyistnieje==0){
+            header("Location: index.php");
+        }
+        else{
+            $wiersz=$rezultat->fetch_assoc();
+            $nazwatego=$wiersz['nazwa'];
+            $plectego=$wiersz['plec'];
+            $idtego=$wiersz['ID'];
+            $wiektego=$wiersz['wiek'];
+            $rangatego=$wiersz['ranga'];
+        }
+        
      }
 ?>
 <?php 

@@ -54,12 +54,20 @@ $IDposta=$_GET['IDposta'];
 $sql="SELECT * FROM posty WHERE ID='$IDposta'";
 if($rezultat=@$polaczenie->query($sql))
  {
-    $wiersz=$rezultat->fetch_assoc();
+    $ileposcikow=$rezultat->num_rows;
+    if($ileposcikow==0)
+    {
+        header("Location: index.php");
+    }
+    else{
+        $wiersz=$rezultat->fetch_assoc();
     $nazwaposta=$wiersz['nazwaposta'];
     $nazwaautora=$wiersz['Nazwaautora'];
     $IDautora=$wiersz['IDautora'];
     $datadodania=$wiersz['data_dodania'];
     $zawartosc=$wiersz['zawartosc'];
+    }
+    
  }
  $dodallike=0;
  $ilelike=0;
