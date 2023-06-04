@@ -143,7 +143,11 @@ require_once "connect.php";
         $ilepostow=$rezultat->num_rows;
         if($ilepostow==0)
         {
-            echo "<div class='col-12 mt-3 text-center'><h3>Użytkownik nie polubił żadnego posta!<h3></div>";
+            echo "<div class='col-12 mt-3 text-center";
+        if($kolortla=="Czarny"){
+            echo " text-light";
+        }
+        echo "'><h3>Użytkownik nie polubił żadnego posta!<h3></div>";
         }
         while($row=mysqli_fetch_assoc($rezultat)){
             $IDposta=$row['ID_posta'];

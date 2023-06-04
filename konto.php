@@ -172,7 +172,11 @@ $polaczenie=@new mysqli($host, $db_user, $db_password, $db_name);
                         $liczbauzytkowanikow=$rezultataki->num_rows;
                         if($liczbauzytkowanikow!=0)
                         {
-                            echo "<table class='my-5 offset-2 offset-md-0 offset-xl-2 table table-striped table-hover table-responsive'><tr><th>Nazwa</th><th>Znajomy od</th><th>O znajomym</th></tr>";
+                            echo "<table class='my-5 offset-2 offset-md-0 offset-xl-2 table table-striped table-hover table-responsive";
+                            if($kolortla=="Czarny"){
+                                echo " text-light";
+                            }
+                            echo "'><tr><th>Nazwa</th><th>Znajomy od</th><th>O znajomym</th></tr>";
                             while($rowki=mysqli_fetch_assoc($rezultataki))
                             {
                                 $nazwaznaj=$rowki['nazwa1'];
